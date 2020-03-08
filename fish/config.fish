@@ -1,0 +1,2 @@
+set -x LANG zh_CN.UTF-8
+set -g -x RANGER_LOAD_DEFAULT_RC FALSE

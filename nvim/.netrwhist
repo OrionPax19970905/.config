@@ -1,0 +1,10 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =8
+let g:netrw_dirhist_8='/Users/orionpax/.hammerspoon/Spoons/WinWin.spoon'
+let g:netrw_dirhist_7='/Users/orionpax/.hammerspoon/Spoons/SpeedMenu.spoon'
+let g:netrw_dirhist_6='/Users/orionpax/.config/ranger'
+let g:netrw_dirhist_5='/Users/orionpax/projects/hugo-blog/content/posts'
+let g:netrw_dirhist_4='/Users/orionpax/projects/hugo-blog/content'
+let g:netrw_dirhist_3='/Users/orionpax/projects/hugo-blog'
+let g:netrw_dirhist_2='/Users/orionpax/projects/hugo-blog/content/posts'
+let g:netrw_dirhist_1='/Users/orionpax/projects/hugo-blog/content'

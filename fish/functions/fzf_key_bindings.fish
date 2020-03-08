@@ -1,0 +1,1 @@
+/Users/orionpax/.fzf/shell/key-bindings.fish
