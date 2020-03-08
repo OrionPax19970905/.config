@@ -369,3 +369,7 @@ autocmd Filetype markdown inoremap <buffer> <leader>a [](<++>) <++><Esc>F[a
 
 " 取消搜索标记
 noremap <leader><CR> :nohlsearch<CR>
+
+" Space to Tab
+nnoremap <leader>tt :%s/    /\t/g
+vnoremap <leader>tt :s/    /\t/g
