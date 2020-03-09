@@ -4,6 +4,7 @@ hs.loadSpoon("ModalMgr")
 hs.loadSpoon("WinWin")
 hs.loadSpoon("KSheet")
 hs.loadSpoon("SpeedMenu")
+hs.loadSpoon("BingDaily")
 
 -------------- 自定义配置 -----------------
 
@@ -49,6 +50,41 @@ if spoon.WinWin then
 		spoon.ModalMgr:activate({"FastLayout"})
 	end)
 end
+
+--- 应用的快速切换
+spoon.ModalMgr:new("GoApp")
+local cmodal = spoon.ModalMgr.modal_list["GoApp"]
+cmodal:bind('', 'escape', 'Deactivate GoApp', function() spoon.ModalMgr:deactivate({"GoApp"}) end)
+cmodal:bind('shift', '/', 'Toggle Cheatsheet', function() spoon.ModalMgr:toggleCheatsheet() end)
+hsapp_list = {
+	{key = 'A', name = 'Alacritty'},
+	{key = 'C', name = 'Google Chrome'},
+	{key = 'W', name = 'WeChat'},
+	{key = 'Y', name = '网易有道词典'},
+	{key = 'M', id = 'com.apple.ActivityMonitor'},
+}
+
+for _, v in ipairs(hsapp_list) do
+    if v.id then
+        local located_name = hs.application.nameForBundleID(v.id)
+        if located_name then
+            cmodal:bind('', v.key, located_name, function()
+                hs.application.launchOrFocusByBundleID(v.id)
+                spoon.ModalMgr:deactivate({"GoApp"})
+            end)
+        end
+    elseif v.name then
+       cmodal:bind('', v.key, v.name, function()
+            hs.application.launchOrFocus(v.name)
+            spoon.ModalMgr:deactivate({"GoApp"})
+        end)
+    end
+end
+
+spoon.ModalMgr.supervisor:bind({"ctrl", "cmd", "shift"}, "G", "Enter GoApp Environment", function()
+		spoon.ModalMgr:deactivateAll()
+		spoon.ModalMgr:activate({"GoApp"})
+end)
 
 --- 当前应用快捷键提示
 if spoon.KSheet then
