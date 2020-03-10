@@ -3,7 +3,6 @@
 " Last Modified: 2019/12/23
 "
 " 1. 基础设置
-"   - System
 "   - Editor behavior
 "   - Terminal Behaviors
 " 2. 插件设置
@@ -25,51 +24,77 @@
 " 1. 基础设置
 " ================================================================
 
-" ---------------------------- System -----------------------------
-
-"set clipboard=unnamedplus
-let &t_ut=''
-set autochdir
-
 " ------------------------ Editor behavior ------------------------
 
+" 设置显示行号
 set number
+" 设置相对行号
 set relativenumber
+" 设置光标下划线
 set cursorline
-set noexpandtab
+" 一个tab等于多少个空格，当 expandtab的情况下，会影响在插入模式下按下<tab>键输入的空格，以及真正的 \t 用多少个空格显示
 set tabstop=2
+" noexpandtab 的情况下，tabstop 只会影响 \t 显示多少个空格（因为插入模式下按 <tab> 将会输入一个字符 \t
+set noexpandtab
+" 使用 >> << 或 == 来缩进代码的时候补出的空格数。这个值也会影响 autoindent 自动缩进的值。
 set shiftwidth=2
+" insert 模式下，一个 tab 键按下后，展示成几个空格
 set softtabstop=2
+" 设置自动缩进
 set autoindent
+" 显示不可见字符
 set list
+" 设置 tab 和 空白符的显示方式
 set listchars=tab:\|\ ,trail:▫
+" 开启真彩色支持
+set termguicolors
+" 保持光标上下的最小行数
 set scrolloff=4
+" 在按下Esc后等待多长时间来决定是否还有输入.默认值为 1000 毫秒
 set ttimeoutlen=0
+" 设置键盘映射没有超时
 set notimeout
-set viewoptions=cursor,folds,slash,unix
+" 设置需要折行
 set wrap
+" 设置 textwidth = 0 的话，就不会自动换行了，默认是" 78，超过这个数量的话按空格会自动换行
 set tw=0
+" 设置缩进方式
 set indentexpr=
-set foldmethod=indent
-set foldlevel=99
+" 启用折叠 zc/zo 折叠和取消折叠
 set foldenable
+" 缩进折叠，相同的缩进中代码会被折叠
+set foldmethod=indent
+" 设置折叠级别
+set foldlevel=99
+" 设置格式化选项
 set formatoptions-=tc
+" 设置新分割窗口在右边
 set splitright
+" 设置新分割窗口在下边
 set splitbelow
+" 不在底部显示当前模式
 set noshowmode
+" 命令模式下，在底部显示，当前键入的指令
 set showcmd
+" 命令模式下，底部操作指令按下 Tab 键自动补全。第一次按下 Tab，会显示所有匹配的操作指令的清单；第二次按下 Tab，会依次选择各个指令。
 set wildmenu
+" 搜索时忽略大小写
 set ignorecase
+" 输入大写字符时大小写敏感
 set smartcase
-set shortmess+=c
+" 执行替换命令时将修改结果放到一个单独的窗口，执行 Esc 取消
 set inccommand=split
+" 设置 ctrl + n 自动补全的配置
 set completeopt=longest,noinsert,menuone,noselect,preview
-set ttyfast "should make scrolling faster
-set lazyredraw "same as above
+" 设置滚动屏幕更快
+set ttyfast
+" 设置滚动屏幕更快
+set lazyredraw 
+" 出错时发出视觉提醒，通常是屏幕闪烁
 set visualbell
+" 设置文件备份
 silent !mkdir -p ~/.config/nvim/tmp/backup
 silent !mkdir -p ~/.config/nvim/tmp/undo
-"silent !mkdir -p ~/.config/nvim/tmp/sessions
 set backupdir=~/.config/nvim/tmp/backup,.
 set directory=~/.config/nvim/tmp/backup,.
 if has('persistent_undo')
@@ -78,9 +103,11 @@ if has('persistent_undo')
 endif
 " 隐藏标尺
 " set colorcolumn=80
+" 根据光标位置自动更新高亮 tag 的间隔时间，单位为毫秒
 set updatetime=1000
+" 普通模式光标的可移动位置，设置 onemore 可以移动到最后一个字符后
 set virtualedit=block
-
+" 打开文件跳转到最后编辑时的光标位置
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 " ------------------------ Terminal Behaviors ------------------------
@@ -153,16 +180,36 @@ endfunction
 " ================================================================
 " 2. 插件设置
 " ================================================================
-" ===
-" === Auto load for first time uses
-" ===
-" if empty(glob('~/.config/nvim/autoload/plug.vim'))
-" 	silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
-" 				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-" 	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-" endif
 
 call plug#begin('~/.config/nvim/plugged')
+
+" ---------------------------- 展示 -----------------------------
+
+" 展示开始画面，显示最近编辑过的文件
+Plug 'mhinz/vim-startify'
+
+" 将当前光标下的字符串，在文件所有用到的位置，标注展示
+Plug 'rrethy/vim-illuminate'
+
+" 在命令栏显示缓冲区列表
+Plug 'bling/vim-bufferline'
+
+" 一个好看的命令栏
+Plug 'theniceboy/eleline.vim'
+
+" 一个好看的配色方案
+Plug 'ajmwagar/vim-deus'
+
+" 每个变量都有不同的颜色
+" <leader>sh 切换开启关闭
+Plug 'jaxbot/semantic-highlight.vim'
+
+" 显示颜色代码的真实颜色
+Plug 'norcalli/nvim-colorizer.lua'
+
+" Plug 'liuchengxu/vista.vim'
+
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " ---------------------------- 移动 -----------------------------
 
@@ -188,6 +235,9 @@ Plug 'kshenoy/vim-signature'
 Plug 'junegunn/fzf', {'dir':'~/.fzf','do': { -> fzf#install() }}
 Plug 'junegunn/fzf.vim'
 
+" 在 NVIM 中使用 Ranger
+Plug 'francoiscabrol/ranger.vim'
+
 " ---------------------------- 编辑 -----------------------------
 
 " 表格对齐，使用命令 Tabularize
@@ -199,9 +249,6 @@ Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
 " cs {oldChar} {newChat} 修改
 " ds {char} 删除
 Plug 'tpope/vim-surround'
-
-" 用 v 选中一个区域后，alt_+/- 按分隔符扩大/缩小选区
-Plug 'terryma/vim-expand-region'
 
 " 文本替换
 " :Far {pattern} {replace-with} {file-mask} [params] : 搜索并替换，使用 t 选择修改内容
@@ -249,15 +296,11 @@ Plug 'chrisbra/vim-diff-enhanced'
 
 " ---------------------------- 增强 ------------------------------
 
-" 展示开始画面，显示最近编辑过的文件
-Plug 'mhinz/vim-startify'
-
-" 相对行号
-Plug 'kennykaye/vim-relativity'
-
 " 成对符号自动补全
 " shift-tab 可以保持Insert模式跳到补全符号后面
 Plug 'Raimondi/delimitMate'
+
+call plug#end()
 
 " ---------------------------- 配置 ------------------------------
 
@@ -296,7 +339,33 @@ let g:signify_vcs_cmds = {
     \ 'git': 'git diff --no-color --diff-algorithm=histogram --no-ext-diff -U0 -- %f',
   \}
 
-call plug#end()
+" 设置 deus 配色
+colorscheme deus
+
+" semantic-highlight
+autocmd BufRead * :SemanticHighlightToggle
+
+" nvim-colorizer 显示 #FEDC56 这种颜色字符的真实颜色
+lua require'colorizer'.setup()
+
+" ranger.vim
+let g:ranger_map_keys = 0
+
+" Vista.vim
+" noremap <silent> T :Vista!!<CR>
+" let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+" let g:vista_default_executive = 'ctags'
+" let g:vista_fzf_preview = ['right:50%']
+" let g:vista#renderer#enable_icon = 1
+" let g:vista#renderer#icons = {
+" \   "function": "\uf794",
+" \   "variable": "\uf71b",
+" \  }
+" function! NearestMethodOrFunction() abort
+" 	return get(b:, 'vista_nearest_method_or_function', '')
+" endfunction
+" set statusline+=%{NearestMethodOrFunction()}
+" autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 
 " ================================================================
 " 3. 按键映射
@@ -312,16 +381,25 @@ nnoremap <C-K> 5k
 " ---------------------------- 编辑 ------------------------------
 
 " 保存并格式化
-nnoremap <C-S> :Prettier <Esc> :w<cr>h
+nnoremap <C-S> :w<cr>h
 inoremap <C-S> <Esc> :Prettier <Esc>:w<cr>i
- 
-" ALT_+/- 用于按分隔符扩大缩小 v 选区
-" map <M-=> <Plug>(expand_region_expand)
-" map <M--> <Plug>(expand_region_shrink)
+autocmd Filetype markdown nnoremap <C-S> :Prettier <Esc> :w<cr>h
+autocmd Filetype markdown inoremap <C-S> <Esc> :Prettier <Esc>:w<cr>i
+
+" 空格转 Tab
+nnoremap <leader>tt :%s/    /\t/g
+vnoremap <leader>tt :s/    /\t/g
+
+" 普通模式按一下 </> 缩进
+nnoremap < <<
+nnoremap > >>
+
+" 禁用 s 键
+noremap s <nop>
 
 " ---------------------------- Tab ------------------------------
 
-" Create a new tab with tu
+" 创建 Tab
 noremap tu :tabe<CR>
 
 " <leader>+数字键 切换tab
@@ -336,21 +414,33 @@ noremap <silent><leader>8 8gt<cr>
 noremap <silent><leader>9 9gt<cr>
 noremap <silent><leader>0 10gt<cr>
 
+" --------------------------- Buffers -----------------------------
+
+" <leader><leader>+数字键 切换 Buffers
+noremap <silent><leader><leader>1 :b1<cr>
+noremap <silent><leader><leader>2 :b2<cr>
+noremap <silent><leader><leader>3 :b3<cr>
+noremap <silent><leader><leader>4 :b4<cr>
+noremap <silent><leader><leader>5 :b5<cr>
+noremap <silent><leader><leader>6 :b6<cr>
+noremap <silent><leader><leader>7 :b7<cr>
+noremap <silent><leader><leader>8 :b8<cr>
+noremap <silent><leader><leader>9 :b9<cr>
+
 " ---------------------------- Screen ------------------------------
 
-" split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
-noremap sh :set splitbelow<CR>:split<CR>
+" 分屏 <C-W> + h/j/k/l 屏幕间切换
+noremap sh :set nosplitbelow<CR>:split<CR>
 noremap sv :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
 
-" Resize splits with arrow keys
-noremap <up> :res -5<CR>
-noremap <down> :res +5<CR>
+" 移动分屏线
+noremap <up> :res +5<CR>
+noremap <down> :res -5<CR>
 noremap <left> :vertical resize-5<CR>
 noremap <right> :vertical resize+5<CR>
 
 " ---------------------------- Markdown ------------------------------
 
-"autocmd Filetype markdown map <leader>w yiWi[<esc>Ea](<esc>pa)
 autocmd Filetype markdown inoremap <buffer> <leader>1 #<Space><Enter><++><Esc>kA
 autocmd Filetype markdown inoremap <buffer> <leader>2 ##<Space><Enter><++><Esc>kA
 autocmd Filetype markdown inoremap <buffer> <leader>3 ###<Space><Enter><++><Esc>kA
@@ -365,11 +455,22 @@ autocmd Filetype markdown inoremap <buffer> <leader>c ```<Enter><++><Enter>```<E
 autocmd Filetype markdown inoremap <buffer> <leader>p ![](<++>) <++><Esc>F[a
 autocmd Filetype markdown inoremap <buffer> <leader>a [](<++>) <++><Esc>F[a
 
+" ---------------------------- 插件 ------------------------------
+
+" semantic-highlight
+nnoremap <leader>sh :SemanticHighlightToggle<CR>
+
+" ranger.vim
+nnoremap <silent> <leader>r :RangerNewTab<CR>
+
 " ---------------------------- 其他 ------------------------------
 
-" 取消搜索标记
-noremap <leader><CR> :nohlsearch<CR>
+" 打开 NVIM 的配置文件
+noremap <leader>rc :e ~/.config/nvim/init.vim<CR>
 
-" Space to Tab
-nnoremap <leader>tt :%s/    /\t/g
-vnoremap <leader>tt :s/    /\t/g
+" 取消搜索标记
+noremap ns :nohlsearch<CR>
+
+" 视图模式复制到系统剪切板
+vnoremap y "+y
+

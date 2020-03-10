@@ -65,20 +65,20 @@ hsapp_list = {
 }
 
 for _, v in ipairs(hsapp_list) do
-    if v.id then
-        local located_name = hs.application.nameForBundleID(v.id)
-        if located_name then
-            cmodal:bind('', v.key, located_name, function()
-                hs.application.launchOrFocusByBundleID(v.id)
-                spoon.ModalMgr:deactivate({"GoApp"})
-            end)
-        end
-    elseif v.name then
-       cmodal:bind('', v.key, v.name, function()
-            hs.application.launchOrFocus(v.name)
-            spoon.ModalMgr:deactivate({"GoApp"})
-        end)
-    end
+	if v.id then
+		local located_name = hs.application.nameForBundleID(v.id)
+		if located_name then
+			cmodal:bind('', v.key, located_name, function()
+				hs.application.launchOrFocusByBundleID(v.id)
+				spoon.ModalMgr:deactivate({"GoApp"})
+			end)
+		end
+	elseif v.name then
+	   cmodal:bind('', v.key, v.name, function()
+			hs.application.launchOrFocus(v.name)
+			spoon.ModalMgr:deactivate({"GoApp"})
+		end)
+	end
 end
 
 spoon.ModalMgr.supervisor:bind({"ctrl", "cmd", "shift"}, "G", "Enter GoApp Environment", function()
