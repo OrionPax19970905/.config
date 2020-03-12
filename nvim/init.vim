@@ -458,8 +458,8 @@ nnoremap <S-K> 5k
 " 保存并格式化
 nnoremap <C-S> :w<cr>h
 inoremap <C-S> <Esc>:w<cr>i
-autocmd Filetype markdown nnoremap <C-S> :PrettierAsync<Esc>:w<cr>h
-autocmd Filetype markdown inoremap <C-S> <Esc> :PrettierAsync<Esc>:w<cr>i
+autocmd Filetype markdown nnoremap <C-S> :Prettier<Esc>:w<cr>h
+autocmd Filetype markdown inoremap <C-S> <Esc> :Prettier<Esc>:w<cr>i
 
 " 空格转 Tab
 nnoremap stt :%s/    /\t/g
