@@ -1,6 +1,6 @@
 " ================================================================
 " Created by OrionPax on 2019/08/26
-" Last Modified: 2019/12/23
+" Last Modified: 2020/03/12
 "
 " 1. 基础设置
 "   - Editor behavior
@@ -89,7 +89,7 @@ set completeopt=longest,noinsert,menuone,noselect,preview
 " 设置滚动屏幕更快
 set ttyfast
 " 设置滚动屏幕更快
-set lazyredraw 
+set lazyredraw
 " 出错时发出视觉提醒，通常是屏幕闪烁
 set visualbell
 " 设置文件备份
@@ -132,49 +132,49 @@ let g:terminal_color_12 = '#CAA9FA'
 let g:terminal_color_13 = '#FF92D0'
 let g:terminal_color_14 = '#9AEDFE'
 augroup TermHandling
-  autocmd!
-  " Turn off line numbers, listchars, auto enter insert mode and map esc to
-  " exit insert mode
-  autocmd TermOpen * setlocal listchars= nonumber norelativenumber
-    \ | startinsert
-  autocmd FileType fzf call LayoutTerm(0.6, 'horizontal')
+	autocmd!
+	" Turn off line numbers, listchars, auto enter insert mode and map esc to
+	" exit insert mode
+	autocmd TermOpen * setlocal listchars= nonumber norelativenumber
+				\ | startinsert
+	autocmd FileType fzf call LayoutTerm(0.6, 'horizontal')
 augroup END
 
 function! LayoutTerm(size, orientation) abort
-  let timeout = 16.0
-  let animation_total = 120.0
-  let timer = {
-    \ 'size': a:size,
-    \ 'step': 1,
-    \ 'steps': animation_total / timeout
-  \}
+	let timeout = 16.0
+	let animation_total = 120.0
+	let timer = {
+				\ 'size': a:size,
+				\ 'step': 1,
+				\ 'steps': animation_total / timeout
+				\}
 
-  if a:orientation == 'horizontal'
-    resize 1
-    function! timer.f(timer)
-      execute 'resize ' . string(&lines * self.size * (self.step / self.steps))
-      let self.step += 1
-    endfunction
-  else
-    vertical resize 1
-    function! timer.f(timer)
-      execute 'vertical resize ' . string(&columns * self.size * (self.step / self.steps))
-      let self.step += 1
-    endfunction
-  endif
-  call timer_start(float2nr(timeout), timer.f, {'repeat': float2nr(timer.steps)})
+	if a:orientation == 'horizontal'
+		resize 1
+		function! timer.f(timer)
+			execute 'resize ' . string(&lines * self.size * (self.step / self.steps))
+			let self.step += 1
+		endfunction
+	else
+		vertical resize 1
+		function! timer.f(timer)
+			execute 'vertical resize ' . string(&columns * self.size * (self.step / self.steps))
+			let self.step += 1
+		endfunction
+	endif
+	call timer_start(float2nr(timeout), timer.f, {'repeat': float2nr(timer.steps)})
 endfunction
 
 " Open autoclosing terminal, with optional size and orientation
 function! OpenTerm(cmd, ...) abort
-  let orientation = get(a:, 2, 'horizontal')
-  if orientation == 'horizontal'
-    new | wincmd J
-  else
-    vnew | wincmd L
-  endif
-  call LayoutTerm(get(a:, 1, 0.5), orientation)
-  call termopen(a:cmd, {'on_exit': {j,c,e -> execute('if c == 0 | close | endif')}})
+	let orientation = get(a:, 2, 'horizontal')
+	if orientation == 'horizontal'
+		new | wincmd J
+	else
+		vnew | wincmd L
+	endif
+	call LayoutTerm(get(a:, 1, 0.5), orientation)
+	call termopen(a:cmd, {'on_exit': {j,c,e -> execute('if c == 0 | close | endif')}})
 endfunction
 
 " ================================================================
@@ -183,7 +183,7 @@ endfunction
 
 call plug#begin('~/.config/nvim/plugged')
 
-" ---------------------------- 展示 -----------------------------
+" ---------------------------- 显示 -----------------------------
 
 " 展示开始画面，显示最近编辑过的文件
 Plug 'mhinz/vim-startify'
@@ -194,37 +194,40 @@ Plug 'rrethy/vim-illuminate'
 " 在命令栏显示缓冲区列表
 Plug 'bling/vim-bufferline'
 
-" 一个好看的命令栏
+" 一个好看的底部状态栏
 Plug 'theniceboy/eleline.vim'
 
 " 一个好看的配色方案
 Plug 'ajmwagar/vim-deus'
 
 " 每个变量都有不同的颜色
-" <leader>sh 切换开启关闭
+" <LEADER>sh 切换开启关闭
 Plug 'jaxbot/semantic-highlight.vim'
 
 " 显示颜色代码的真实颜色
 Plug 'norcalli/nvim-colorizer.lua'
 
-" Plug 'liuchengxu/vista.vim'
+" 为括号添加不同的颜色
+Plug 'luochen1990/rainbow'
 
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" 更好看的 Tab Line
+Plug 'mg979/vim-xtabline'
 
 " ---------------------------- 移动 -----------------------------
 
 " 全文快速移动，
-" <leader><leader>s{char} 搜索跳转
-" <leader><leader>w 跳转到后面的单词首字母
-" <leader><leader>b 跳转到前面的单词首字母
+" <LEADER><LEADER>s{char} 搜索跳转
+" <LEADER><LEADER>w 跳转到后面的单词首字母
+" <LEADER><LEADER>b 跳转到前面的单词首字母
 Plug 'easymotion/vim-easymotion'
 
-" 快速标记插件
-" m[a-zA-Z] : 打标签
-" '[a-zA-Z] : 跳转到标签位置
-" '.        : 跳转到最后一次修改位置
-" m<space>  : 去除所有标签
-Plug 'kshenoy/vim-signature'
+" 标签
+" <C-B>              : 显示所有标签
+" <LEADER>bt         : 打标签
+" <LEADER>ba         : 加批注
+" :ClearBookmarks    : 清除缓冲区文件所有标签
+" :ClearAllBookmarks : 清除所有标签
+Plug 'MattesGroeger/vim-bookmarks'
 
 " 快速文件搜索
 " :Files [PATH] : 搜索文件
@@ -236,12 +239,15 @@ Plug 'junegunn/fzf', {'dir':'~/.fzf','do': { -> fzf#install() }}
 Plug 'junegunn/fzf.vim'
 
 " 在 NVIM 中使用 Ranger
+" <C-F> 打开 Ragner
 Plug 'francoiscabrol/ranger.vim'
+
+" Plug 'liuchengxu/vista.vim'
 
 " ---------------------------- 编辑 -----------------------------
 
 " 表格对齐，使用命令 Tabularize
-" Shift + v 选中多行，使用:'<,'> Tab/{string} 按等号、冒号、表格对齐文本。
+" Shift + v 选中多行，使用:'<,'> Tabularize/{string} 按等号、冒号、表格对齐文本。
 Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
 
 " 成对编辑
@@ -256,12 +262,6 @@ Plug 'tpope/vim-surround'
 " :Fardo [params] : 确认修改
 Plug 'brooth/far.vim'
 
-" 文本格式化
-" :Prettier : 格式化
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown'] }
-
 " 中文排版
 " :Pangu
 Plug 'hotoo/pangu.vim'
@@ -270,9 +270,44 @@ Plug 'hotoo/pangu.vim'
 " 选中 gc、gcc
 Plug 'tpope/vim-commentary'
 
-" ---------------------------- Markdown -------------------------
+" 代码片段
+" <C-J> 使用代码片段/跳转到下一占位符
+" <C-K> 跳转到上一占位符
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 
-" 预览Markdown
+" 成对符号自动补全
+Plug 'jiangmiao/auto-pairs'
+
+" 使用 + - 放大缩小选中区域
+Plug 'terryma/vim-expand-region'
+
+" va=  visual after =
+" ca=  change after =
+" da=  delete after =
+" ya=  yank after =
+Plug 'junegunn/vim-after-object'
+
+" <LEADER>ssip 替换当前段落中光标下方的单词
+Plug 'svermeulen/vim-subversive'
+
+" 格式化
+" :Autoformat 格式化代码
+Plug 'chiel92/vim-autoformat'
+
+" -------------------------- 文件类型支持 -------------------------
+
+" JSON 高亮
+Plug 'elzr/vim-json'
+
+" JavaScript 高亮
+Plug 'pangloss/vim-javascript', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+Plug 'yuezk/vim-js', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+
+" JSX 高亮
+Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+
+" Markdown
 " :MarkdownPreview
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install','for' :['markdown', 'vim-plug']}
 
@@ -286,19 +321,31 @@ Plug 'theniceboy/bullets.vim'
 " ---------------------------- 版本控制 --------------------------
 
 " Git 支持
-Plug 'tpope/vim-fugitive'
+" <C-G> 仅显示修改代码段，其他折叠
+" <LEADER>gp 展示修改内容
+" <LEADER>gj 跳转到下一处修改
+" <LEADER>gk 跳转到上一处修改
+Plug 'airblade/vim-gitgutter'
 
-" 用于在侧边符号栏显示 git/svn 的 diff
-Plug 'mhinz/vim-signify'
+" :FzfGitignore
+" 从 https://www.gitignore.io/ 上创建 .gitignore 文件
+Plug 'fszymanski/fzf-gitignore', { 'do': ':UpdateRemotePlugins' }
 
-" Diff 增强，支持 histogram / patience 等更科学的 diff 算法
-Plug 'chrisbra/vim-diff-enhanced'
+" 本地修改历史
+" <C-U> 打开本地文件修改历史
+Plug 'mbbill/undotree'
 
-" ---------------------------- 增强 ------------------------------
+" ------------------------- 其他编辑器增强 ------------------------------
 
-" 成对符号自动补全
-" shift-tab 可以保持Insert模式跳到补全符号后面
-Plug 'Raimondi/delimitMate'
+" 输入 " 时显示寄存器内容
+Plug 'junegunn/vim-peekaboo'
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" VIM 终端增强
+Plug 'wincent/terminus'
+
+" 向其他 VIM 插件添加文件类型的符号
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
@@ -314,30 +361,23 @@ let g:mkdp_open_ip = ''
 let g:mkdp_echo_preview_url = 0
 let g:mkdp_browserfunc = ''
 let g:mkdp_preview_options = {
-      \ 'mkit': {},
-      \ 'katex': {},
-      \ 'uml': {},
-      \ 'maid': {},
-      \ 'disable_sync_scroll': 0,
-      \ 'sync_scroll_type': 'middle',
-      \ 'hide_yaml_meta': 1
-      \ }
+			\ 'mkit': {},
+			\ 'katex': {},
+			\ 'uml': {},
+			\ 'maid': {},
+			\ 'disable_sync_scroll': 0,
+			\ 'sync_scroll_type': 'middle',
+			\ 'hide_yaml_meta': 1
+			\ }
 let g:mkdp_markdown_css = ''
 let g:mkdp_highlight_css = ''
 let g:mkdp_port = ''
 let g:mkdp_page_title = '「${name}」'
 
-" signify
-let g:signify_vcs_list = ['git', 'svn']
-let g:signify_sign_add               = '+'
-let g:signify_sign_delete            = '_'
-let g:signify_sign_delete_first_line = '‾'
-let g:signify_sign_change            = '~'
-let g:signify_sign_changedelete      = g:signify_sign_change
-" git 仓库使用 histogram 算法进行 diff
-let g:signify_vcs_cmds = {
-    \ 'git': 'git diff --no-color --diff-algorithm=histogram --no-ext-diff -U0 -- %f',
-  \}
+" GitGutter
+let g:gitgutter_map_keys = 0
+let g:gitgutter_override_sign_column_highlight = 0
+let g:gitgutter_preview_win_floating = 1
 
 " 设置 deus 配色
 colorscheme deus
@@ -362,33 +402,66 @@ let g:ranger_map_keys = 0
 " \   "variable": "\uf71b",
 " \  }
 " function! NearestMethodOrFunction() abort
-" 	return get(b:, 'vista_nearest_method_or_function', '')
+"		return get(b:, 'vista_nearest_method_or_function', '')
 " endfunction
 " set statusline+=%{NearestMethodOrFunction()}
 " autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+
+" Ultisnips
+let g:tex_flavor = "latex"
+let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/my-ultisnips/', 'UltiSnips']
+
+" Undotree
+let g:undotree_DiffAutoOpen = 1
+let g:undotree_SetFocusWhenToggle = 1
+let g:undotree_ShortIndicators = 1
+let g:undotree_WindowLayout = 2
+let g:undotree_DiffpanelHeight = 8
+let g:undotree_SplitWidth = 24
+
+" vim-after-object
+autocmd VimEnter * call after_object#enable('=', ':', '-', '#', ' ')
+
+" vim-bookmarks
+let g:bookmark_no_default_key_mappings = 1
+let g:bookmark_auto_save = 1
+let g:bookmark_highlight_lines = 1
+let g:bookmark_center = 1
+let g:bookmark_auto_close = 1
+
+" rainbow
+let g:rainbow_active = 1
+
+" xtabline
+let g:xtabline_settings = {}
+let g:xtabline_settings.enable_mappings = 0
+let g:xtabline_settings.tabline_modes = ['tabs', 'buffers']
+let g:xtabline_settings.enable_persistance = 0
+let g:xtabline_settings.last_open_first = 1
+
 
 " ================================================================
 " 3. 按键映射
 " ================================================================
 
-let mapleader=","
+let mapleader=" "
 " ---------------------------- 移动 ------------------------------
 
 " Ctrl + JK 快速移动
-nnoremap <C-J> 5j
-nnoremap <C-K> 5k
+nnoremap <S-J> 5j
+nnoremap <S-K> 5k
 
 " ---------------------------- 编辑 ------------------------------
 
 " 保存并格式化
 nnoremap <C-S> :w<cr>h
-inoremap <C-S> <Esc> :Prettier <Esc>:w<cr>i
-autocmd Filetype markdown nnoremap <C-S> :Prettier <Esc> :w<cr>h
-autocmd Filetype markdown inoremap <C-S> <Esc> :Prettier <Esc>:w<cr>i
+inoremap <C-S> <Esc>:w<cr>i
+autocmd Filetype markdown nnoremap <C-S> :Autoformat <Esc>:w<cr>h
+autocmd Filetype markdown inoremap <C-S> <Esc> :Autoformat <Esc>:w<cr>i
 
 " 空格转 Tab
-nnoremap <leader>tt :%s/    /\t/g
-vnoremap <leader>tt :s/    /\t/g
+nnoremap stt :%s/    /\t/g
+vnoremap stt :s/    /\t/g
 
 " 普通模式按一下 </> 缩进
 nnoremap < <<
@@ -400,36 +473,36 @@ noremap s <nop>
 " ---------------------------- Tab ------------------------------
 
 " 创建 Tab
-noremap tu :tabe<CR>
+noremap tab :tabe<CR>
 
-" <leader>+数字键 切换tab
-noremap <silent><leader>1 1gt<cr>
-noremap <silent><leader>2 2gt<cr>
-noremap <silent><leader>3 3gt<cr>
-noremap <silent><leader>4 4gt<cr>
-noremap <silent><leader>5 5gt<cr>
-noremap <silent><leader>6 6gt<cr>
-noremap <silent><leader>7 7gt<cr>
-noremap <silent><leader>8 8gt<cr>
-noremap <silent><leader>9 9gt<cr>
-noremap <silent><leader>0 10gt<cr>
+" <LEADER>+数字键 切换tab
+noremap <silent><LEADER>1 1gt<cr>
+noremap <silent><LEADER>2 2gt<cr>
+noremap <silent><LEADER>3 3gt<cr>
+noremap <silent><LEADER>4 4gt<cr>
+noremap <silent><LEADER>5 5gt<cr>
+noremap <silent><LEADER>6 6gt<cr>
+noremap <silent><LEADER>7 7gt<cr>
+noremap <silent><LEADER>8 8gt<cr>
+noremap <silent><LEADER>9 9gt<cr>
+noremap <silent><LEADER>0 10gt<cr>
 
 " --------------------------- Buffers -----------------------------
 
-" <leader><leader>+数字键 切换 Buffers
-noremap <silent><leader><leader>1 :b1<cr>
-noremap <silent><leader><leader>2 :b2<cr>
-noremap <silent><leader><leader>3 :b3<cr>
-noremap <silent><leader><leader>4 :b4<cr>
-noremap <silent><leader><leader>5 :b5<cr>
-noremap <silent><leader><leader>6 :b6<cr>
-noremap <silent><leader><leader>7 :b7<cr>
-noremap <silent><leader><leader>8 :b8<cr>
-noremap <silent><leader><leader>9 :b9<cr>
+" <LEADER><LEADER>+数字键 切换 Buffers
+noremap <silent><LEADER><LEADER>1 :b1<cr>
+noremap <silent><LEADER><LEADER>2 :b2<cr>
+noremap <silent><LEADER><LEADER>3 :b3<cr>
+noremap <silent><LEADER><LEADER>4 :b4<cr>
+noremap <silent><LEADER><LEADER>5 :b5<cr>
+noremap <silent><LEADER><LEADER>6 :b6<cr>
+noremap <silent><LEADER><LEADER>7 :b7<cr>
+noremap <silent><LEADER><LEADER>8 :b8<cr>
+noremap <silent><LEADER><LEADER>9 :b9<cr>
 
 " ---------------------------- Screen ------------------------------
 
-" 分屏 <C-W> + h/j/k/l 屏幕间切换
+" sh / sv 分屏
 noremap sh :set nosplitbelow<CR>:split<CR>
 noremap sv :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
 
@@ -439,34 +512,70 @@ noremap <down> :res -5<CR>
 noremap <left> :vertical resize-5<CR>
 noremap <right> :vertical resize+5<CR>
 
+" 分屏 <LEADER> + h/j/k/l 屏幕间切换
+nnoremap <LEADER>h <C-W>h
+nnoremap <LEADER>j <C-W>j
+nnoremap <LEADER>k <C-W>k
+nnoremap <LEADER>l <C-W>l
+
 " ---------------------------- Markdown ------------------------------
 
-autocmd Filetype markdown inoremap <buffer> <leader>1 #<Space><Enter><++><Esc>kA
-autocmd Filetype markdown inoremap <buffer> <leader>2 ##<Space><Enter><++><Esc>kA
-autocmd Filetype markdown inoremap <buffer> <leader>3 ###<Space><Enter><++><Esc>kA
-autocmd Filetype markdown inoremap <buffer> <leader>4 ####<Space><Enter><++><Esc>kA
-autocmd Filetype markdown inoremap <buffer> <leader>5 #####<Space><Enter><++><Esc>kA
-autocmd Filetype markdown inoremap <buffer> <leader>f <Esc>/<++><CR>:nohlsearch<CR>"_c4l
-autocmd Filetype markdown inoremap <buffer> <leader>w <Esc>/ <++><CR>:nohlsearch<CR>"_c5l<CR>
-autocmd Filetype markdown inoremap <buffer> <leader>l ---<Enter><Enter>
-autocmd Filetype markdown inoremap <buffer> <leader>b **** <++><Esc>F*hi
-autocmd Filetype markdown inoremap <buffer> <leader>w `` <++><Esc>F`i
-autocmd Filetype markdown inoremap <buffer> <leader>c ```<Enter><++><Enter>```<Enter><Enter><++><Esc>4kA
-autocmd Filetype markdown inoremap <buffer> <leader>p ![](<++>) <++><Esc>F[a
-autocmd Filetype markdown inoremap <buffer> <leader>a [](<++>) <++><Esc>F[a
+" 使用 Snippets
+" autocmd Filetype markdown inoremap <buffer> <LEADER>1 #<Space><Enter><++><Esc>kA
+" autocmd Filetype markdown inoremap <buffer> <LEADER>2 ##<Space><Enter><++><Esc>kA
+" autocmd Filetype markdown inoremap <buffer> <LEADER>3 ###<Space><Enter><++><Esc>kA
+" autocmd Filetype markdown inoremap <buffer> <LEADER>4 ####<Space><Enter><++><Esc>kA
+" autocmd Filetype markdown inoremap <buffer> <LEADER>5 #####<Space><Enter><++><Esc>kA
+" autocmd Filetype markdown inoremap <buffer> <LEADER>f <Esc>/<++><CR>:nohlsearch<CR>"_c4l
+" autocmd Filetype markdown inoremap <buffer> <LEADER>w <Esc>/ <++><CR>:nohlsearch<CR>"_c5l<CR>
+" autocmd Filetype markdown inoremap <buffer> <LEADER>l ---<Enter><Enter>
+" autocmd Filetype markdown inoremap <buffer> <LEADER>b **** <++><Esc>F*hi
+" autocmd Filetype markdown inoremap <buffer> <LEADER>w `` <++><Esc>F`i
+" autocmd Filetype markdown inoremap <buffer> <LEADER>c ```<Enter><++><Enter>```<Enter><Enter><++><Esc>4kA
+" autocmd Filetype markdown inoremap <buffer> <LEADER>p ![](<++>) <++><Esc>F[a
+" autocmd Filetype markdown inoremap <buffer> <LEADER>a [](<++>) <++><Esc>F[a
 
 " ---------------------------- 插件 ------------------------------
 
 " semantic-highlight
-nnoremap <leader>sh :SemanticHighlightToggle<CR>
+nnoremap <LEADER>sh :SemanticHighlightToggle<CR>
 
 " ranger.vim
-nnoremap <silent> <leader>r :RangerNewTab<CR>
+nnoremap <silent> <C-F> :RangerNewTab<CR>
+
+" Ultisnips
+inoremap <C-N> <nop>
+let g:UltiSnipsExpandTrigger="<C-J>"
+let g:UltiSnipsJumpForwardTrigger="<C-J>"
+let g:UltiSnipsJumpBackwardTrigger="<C-K>"
+
+" Undotree
+noremap <C-U> :UndotreeToggle<CR>
+function g:Undotree_CustomMap()
+	nmap <buffer> j <plug>UndotreeNextState
+	nmap <buffer> k <plug>UndotreePreviousState
+	nmap <buffer> <S-J> 5<plug>UndotreeNextState
+	nmap <buffer> <S-K> 5<plug>UndotreePreviousState
+endfunc
+
+" GitGutter
+nnoremap <C-G> :GitGutterFold<CR>
+nnoremap <LEADER>gp :GitGutterPreviewHunk<CR>
+nnoremap <LEADER>gk :GitGutterPrevHunk<CR>
+nnoremap <LEADER>gj :GitGutterNextHunk<CR>
+
+" vim-subversive
+nmap <LEADER>ss <plug>(SubversiveSubstituteWordRange)
+
+" vim-bookmarks
+nmap <C-B> <Plug>BookmarkShowAll
+nmap <LEADER>bt <Plug>BookmarkToggle
+nmap <LEADER>ba <Plug>BookmarkAnnotate
 
 " ---------------------------- 其他 ------------------------------
 
 " 打开 NVIM 的配置文件
-noremap <leader>rc :e ~/.config/nvim/init.vim<CR>
+noremap grc :e ~/.config/nvim/init.vim<CR>
 
 " 取消搜索标记
 noremap ns :nohlsearch<CR>

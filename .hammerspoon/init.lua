@@ -44,8 +44,8 @@ if spoon.WinWin then
 	cmodal:bind('', '=', '放大', function() spoon.WinWin:moveAndResize("expand") end, nil, function() spoon.WinWin:moveAndResize("expand") end)
 	cmodal:bind('', '-', '缩小', function() spoon.WinWin:moveAndResize("shrink") end, nil, function() spoon.WinWin:moveAndResize("shrink") end)
 
-	-- 按下 ctrl + cmd + shift + L 进入快速布局
-	spoon.ModalMgr.supervisor:bind({"ctrl", "cmd", "shift"}, "L", "Enter FastLayout Environment", function()
+	-- 按下 alt + L 进入快速布局
+	spoon.ModalMgr.supervisor:bind({"alt"}, "L", "Enter FastLayout Environment", function()
 		spoon.ModalMgr:deactivateAll()
 		spoon.ModalMgr:activate({"FastLayout"})
 	end)
@@ -81,7 +81,7 @@ for _, v in ipairs(hsapp_list) do
 	end
 end
 
-spoon.ModalMgr.supervisor:bind({"ctrl", "cmd", "shift"}, "G", "Enter GoApp Environment", function()
+spoon.ModalMgr.supervisor:bind({"alt"}, "G", "Enter GoApp Environment", function()
 		spoon.ModalMgr:deactivateAll()
 		spoon.ModalMgr:activate({"GoApp"})
 end)
@@ -96,8 +96,8 @@ if spoon.KSheet then
 		spoon.ModalMgr:deactivate({"KeySheet"})
 	end)
 
-	-- 按下 ctrl + shift + / 查看当前应用快捷键
-	spoon.ModalMgr.supervisor:bind({"ctrl", "shift"}, "/", "Enter KeySheet Environment", function()
+	-- 按下 alt + shift + / 查看当前应用快捷键
+	spoon.ModalMgr.supervisor:bind({"alt", "shift"}, "/", "Enter KeySheet Environment", function()
 		spoon.KSheet:show()
 		spoon.ModalMgr:deactivateAll()
 		spoon.ModalMgr:activate({"KeySheet"})
@@ -117,13 +117,12 @@ if tapper then
 	spoon.ModalMgr:new("MarkdownEsc")
 	local cmodal = spoon.ModalMgr.modal_list["MarkdownEsc"]
 
-	cmodal:bind({"ctrl", "shift", "alt"}, 'M', 'Deactivate MarkdownEsc', function()
+	cmodal:bind({"alt"}, 'M', 'Deactivate MarkdownEsc', function()
 		tapper:stop()
 		spoon.ModalMgr:deactivate({"MarkdownEsc"})
 	end)
 
-	-- 按下 ctrl + shift + / 查看当前应用快捷键
-	spoon.ModalMgr.supervisor:bind({"ctrl", "cmd", "shift"}, "M", "Enter MarkdownEsc Environment", function()
+	spoon.ModalMgr.supervisor:bind({"alt"}, "M", "Enter MarkdownEsc Environment", function()
 		tapper:start()
 		spoon.ModalMgr:deactivateAll()
 		spoon.ModalMgr:activate({"MarkdownEsc"})
@@ -136,5 +135,5 @@ if spoon.SpeedMenu then
 end
 
 --- 默认开启 supervisor 的环境，按 ctrl + cmd + shift + q 切换 supervisor 开启关闭。 按 ctrl + cmd + shift + / 打开环境帮助。
---- 只有开启 supervisor 环境时，才能输入热键开启其他环境。比如按下 ctrl + cmd + shift + L 进入 FastLayout 环境。
+--- 只有开启 supervisor 环境时，才能输入热键开启其他环境。比如按下 alt + L 进入 FastLayout 环境。
 spoon.ModalMgr.supervisor:enter()
