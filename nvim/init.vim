@@ -292,8 +292,10 @@ Plug 'junegunn/vim-after-object'
 Plug 'svermeulen/vim-subversive'
 
 " 格式化
-" :Autoformat 格式化代码
-Plug 'chiel92/vim-autoformat'
+" :Prettier 格式化代码
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 " -------------------------- 文件类型支持 -------------------------
 
@@ -456,8 +458,8 @@ nnoremap <S-K> 5k
 " 保存并格式化
 nnoremap <C-S> :w<cr>h
 inoremap <C-S> <Esc>:w<cr>i
-autocmd Filetype markdown nnoremap <C-S> :Autoformat <Esc>:w<cr>h
-autocmd Filetype markdown inoremap <C-S> <Esc> :Autoformat <Esc>:w<cr>i
+autocmd Filetype markdown nnoremap <C-S> :PrettierAsync<Esc>:w<cr>h
+autocmd Filetype markdown inoremap <C-S> <Esc> :PrettierAsync<Esc>:w<cr>i
 
 " 空格转 Tab
 nnoremap stt :%s/    /\t/g
