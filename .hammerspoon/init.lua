@@ -129,6 +129,31 @@ if tapper then
 	end)
 end
 
+--- 浏览页面时使用 j、k 代替上下
+tapper2 = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(event)
+  if event:getCharacters() == "j" then
+		return true, {hs.eventtap.event.newKeyEvent({}, "down", true)}
+	elseif event:getCharacters() == "k" then
+		return true, {hs.eventtap.event.newKeyEvent({}, "up", true)}
+	end
+end)
+
+if tapper2 then
+	spoon.ModalMgr:new("ReadPage")
+	local cmodal = spoon.ModalMgr.modal_list["ReadPage"]
+
+	cmodal:bind({"alt"}, 'R', 'Deactivate ReadPage', function()
+		tapper2:stop()
+		spoon.ModalMgr:deactivate({"ReadPage"})
+	end)
+
+	spoon.ModalMgr.supervisor:bind({"alt"}, "R", "Enter ReadPage Environment", function()
+		tapper2:start()
+		spoon.ModalMgr:deactivateAll()
+		spoon.ModalMgr:activate({"ReadPage"})
+	end)
+end
+
 --- 默认开启网速提示
 if spoon.SpeedMenu then
 	spoon.SpeedMenu:start()
