@@ -2,3 +2,4 @@ nvim/tmp/
 nvim/plugged/
 nvim/.netrwhist
 configstore/
+yarn/global/node_modules/
