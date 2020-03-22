@@ -9,6 +9,10 @@ set -gx HTTPS_PROXY "http://127.0.0.1:8001/"
 set -gx NO_PROXY "localhost,127.0.0.1,localaddress"
 set -gx LDFLAGS "-L/usr/local/opt/mysql@5.7/lib"
 set -gx CPPFLAGS "-I/usr/local/opt/mysql@5.7/include"
+set -gx ANDROID_HOME "/Users/orionpax/Library/Android/sdk"
 
 # 设置 Path
-set -g fish_user_paths "/usr/local/opt/mysql@5.7/bin" $fish_user_paths
+set -x fish_user_paths "/usr/local/opt/mysql@5.7/bin" $fish_user_paths
+set -x fish_user_paths "/usr/local/opt/openjdk/bin" $fish_user_paths
+set -x fish_user_paths "/Users/orionpax/Library/flutter/bin" $fish_user_paths
+

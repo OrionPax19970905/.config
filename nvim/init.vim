@@ -34,8 +34,10 @@ set relativenumber
 set cursorline
 " 一个tab等于多少个空格，当 expandtab的情况下，会影响在插入模式下按下<tab>键输入的空格，以及真正的 \t 用多少个空格显示
 set tabstop=2
+" 将 tab 转层空格
+set expandtab
 " noexpandtab 的情况下，tabstop 只会影响 \t 显示多少个空格（因为插入模式下按 <tab> 将会输入一个字符 \t
-set noexpandtab
+" set noexpandtab
 " 使用 >> << 或 == 来缩进代码的时候补出的空格数。这个值也会影响 autoindent 自动缩进的值。
 set shiftwidth=2
 " insert 模式下，一个 tab 键按下后，展示成几个空格
@@ -464,6 +466,10 @@ autocmd Filetype markdown inoremap <C-S> <Esc> :Prettier<Esc>:w<cr>i
 " 空格转 Tab
 nnoremap stt :%s/    /\t/g
 vnoremap stt :s/    /\t/g
+
+" Tab 转空格
+nnoremap tts :%s/\t/    /g
+vnoremap tts :s/\t/    /g
 
 " 普通模式按一下 </> 缩进
 nnoremap < <<
