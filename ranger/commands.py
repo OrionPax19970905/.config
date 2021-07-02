@@ -64,7 +64,7 @@ class my_edit(Command):
         return self._tab_directory_content()
 
 
-    class paste_as_root(Command):
+class paste_as_root(Command):
     def execute(self):
         if self.fm.do_cut:
             self.fm.execute_console('shell sudo mv %c .')
