@@ -65,11 +65,11 @@ class my_edit(Command):
 
 
     class paste_as_root(Command):
-	def execute(self):
-		if self.fm.do_cut:
-			self.fm.execute_console('shell sudo mv %c .')
-		else:
-			self.fm.execute_console('shell sudo cp -r %c .')
+    def execute(self):
+        if self.fm.do_cut:
+            self.fm.execute_console('shell sudo mv %c .')
+        else:
+            self.fm.execute_console('shell sudo cp -r %c .')
 
 
 
